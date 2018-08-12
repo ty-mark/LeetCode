@@ -1,3 +1,6 @@
+// Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive)
+// Assume that there is only one duplicate number, find the duplicate one.
+
 // Binary search, smart algorithm
 // take advantage of the fact that the half with duplicate numbers is denser
 
