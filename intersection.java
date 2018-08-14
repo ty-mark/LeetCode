@@ -51,6 +51,7 @@ class Solution {
         }
         int[] ret = new int[ans.size()];
         int k = 0;
+        // Traverse all the items in the hashset
         for (int item : ans) ret[k++] = item;
         return ret;
     }
