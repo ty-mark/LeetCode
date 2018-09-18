@@ -1,5 +1,6 @@
+// Given a linked list, swap every two adjacent nodes and return its head.
 
-
+// Many swap ops, need to improve!
 class Solution {
     public ListNode swapPairs(ListNode head) {
         if (head == null) return null;
