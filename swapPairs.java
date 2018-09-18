@@ -28,3 +28,24 @@ class Solution {
         return head;
     }
 }
+
+// A bit better approach using a dummy node
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy;
+        ListNode curr = head;
+        ListNode next;
+        while (curr != null && curr.next != null) {
+            next = curr.next;
+            curr.next = next.next;
+            prev.next = next;
+            next.next = curr;
+            prev = curr;
+            curr = curr.next;
+        }
+        return dummy.next;
+    }
+}
