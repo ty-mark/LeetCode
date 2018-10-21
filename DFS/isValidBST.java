@@ -22,6 +22,7 @@
 // Output: false
 // Explanation: The input is: [5,1,4,null,null,3,6]. The root node's value is 5 but its right child's value is 4.
 
+// Naive approach
 class Solution {
     public boolean isValidBST(TreeNode root) {
         if (root == null) return true;
@@ -44,4 +45,39 @@ class Solution {
         return rightMin(root.left);
     }
     
+}
+
+// Better approach with a little math
+// also need to note the use of Wrapper class "Integer"
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) return true;
+        return isChildBST(root, null, null);
+    }
+    private boolean isChildBST(TreeNode root, Integer low, Integer high) {
+        if (root == null) return true;
+        if ((low != null && root.val <= low) || (high != null && root.val >= high)) return false;
+        return isChildBST(root.left, low, root.val) && isChildBST(root.right, root.val, high);
+    }
+}
+
+// Iterative inorder traversal
+// Inorder traversal provides values in non-descending order
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) return true;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode pre = null;
+        while (root != null || !stack.empty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if (pre != null && root.val <= pre.val) return false;
+            pre = root;
+            root = root.right;
+        }
+        return true;
+    }
 }
