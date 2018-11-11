@@ -15,6 +15,8 @@
       [9,20],
       [15,7]
     ]
+
+    **including bottom up version**
 */
 
 // BFS with a queue
@@ -65,6 +67,24 @@ class Solution {
         if (root == null) return;
         if (level >= list.size()) list.add(new ArrayList<Integer>());
         list.get(level).add(root.val);
+        helper(list, root.left, level + 1);
+        helper(list, root.right, level + 1);
+    }
+}
+
+
+// Level order traversal bottom up
+// Add the new sublist at the first position of the list
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        helper(list, root, 0);
+        return list;
+    }
+    private void helper(List<List<Integer>> list, TreeNode root, int level) {
+        if (root == null) return;
+        if (level >= list.size()) list.add(0, new ArrayList<Integer>());
+        list.get(list.size() - level - 1).add(root.val);
         helper(list, root.left, level + 1);
         helper(list, root.right, level + 1);
     }
