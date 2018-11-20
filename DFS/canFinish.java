@@ -49,12 +49,45 @@ class Solution {
         if (visited[course]) return true;
         if (graph[course] == null) return false;
         visited[course] = true;
-        memo[course] = true;
         for (int i = 0; i < graph[course].size(); i++) {
             if (hasCycle(graph, visited, memo, (int) graph[course].get(i))) return true;
         }
         // when done checking the entry course, remove it from the visited array
         visited[course] = false;
+        memo[course] = true;
         return false;
+    }
+}
+
+// Traverse the graph with BFS
+// Add the course with no dependency to the queue
+// If there is no cycle, then exact total number of courses will be added
+class Solution {
+    public boolean canFinish(int numCourses, int[][] courses) {
+        if (courses.length == 0) return true;
+        int[] indegrees = new int[numCourses];
+        List<Integer>[] edges = new ArrayList[numCourses];
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < courses.length; i++) {
+            indegrees[courses[i][1]] += 1;
+            if (edges[courses[i][0]] == null) edges[courses[i][0]] = new ArrayList<Integer>();
+            edges[courses[i][0]].add(courses[i][1]);
+        }
+        for (int i = 0; i < indegrees.length; i++) {
+            if (indegrees[i] == 0) q.offer(i);
+        }
+        int count = 0;
+        while (!q.isEmpty()) {
+            int course = (int) q.poll();
+            count += 1;
+            if (edges[course] == null) continue;
+            int size = edges[course].size();
+            for (int i = 0; i < size; i++) {
+                int pointer = edges[course].get(i);
+                indegrees[pointer] -= 1;
+                if (indegrees[pointer] == 0) q.offer(pointer);
+            }
+        }
+        return count == numCourses;
     }
 }
