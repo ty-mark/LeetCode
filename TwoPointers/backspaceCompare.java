@@ -7,6 +7,7 @@ Output: true
 Explanation: Both S and T become "ac".
 */
 
+// consecutive # case: "abc##d" --> "ad"
 class Solution {
     public boolean backspaceCompare(String S, String T) {
         if (S == null || T == null) return false;
