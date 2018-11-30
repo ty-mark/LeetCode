@@ -1,9 +1,18 @@
-// Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive)
-// Assume that there is only one duplicate number, find the duplicate one.
+/*
+    Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive)
+    Assume that there is only one duplicate number, find the duplicate one.
+    Example 1:
+
+    Input: [1,3,4,2,2]
+    Output: 2
+    Example 2:
+
+    Input: [3,1,3,4,2]
+    Output: 3
+*/
 
 // Binary search, smart algorithm
 // take advantage of the fact that the half with duplicate numbers is denser
-
 class Solution {
     public int findDuplicate(int[] nums) {
         int low = 1, high = nums.length - 1;
@@ -15,6 +24,9 @@ class Solution {
                 if (nums[i] <= mid) count++;
             }
             // move the pointer to the denser half
+            // if "<" then missing values in left part
+            // if "=" then no duplicates in left part
+            // Either one right part is denser
             if (count <= mid) low = mid + 1;
             else {
                 high = mid - 1;
