@@ -51,13 +51,16 @@ class Solution {
     public int numDistinct(String s, String t) {
         int m = s.length(), n = t.length();
         // dp[i][j] --> number of distinct subsequence from s(0,i-1) which is the same as t(0,j-1)
+        // 'i' and 'j' represent the last digit of current strings S and T
         int[][] dp = new int[m + 1][n + 1];
         for (int i = 0; i <= m; i++) {dp[i][0] = 1;}
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 // this always holds even if s.char(i-1) != t.char(j-1)
+                // cause if S(0 -> i-2) contains 2 T(0 -> i-1), then
+                // S(0 -> i-2) at least contains 2 T(0 -> i-1).
                 dp[i][j] = dp[i - 1][j];
-                // when s.char(i-1) == t.char(j-1), we should also add the match between s(0,i-2) and t(0,i-2)
+                // when s.char(i-1) == t.char(j-1), the match between s(0,i-2) and t(0,i-2) can be inherited
                 if (s.charAt(i - 1) == t.charAt(j - 1)) {dp[i][j] += dp[i - 1][j - 1];}
             }
         }
