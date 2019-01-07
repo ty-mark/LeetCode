@@ -64,3 +64,46 @@ class Solution {
         return -1;
     }
 }
+
+/* Follow up:
+This is a follow up problem to Search in Rotated Sorted Array, 
+where nums may contain duplicates.
+
+Example 1:
+Input: nums = [2,5,6,0,0,1,2], target = 0
+Output: true
+
+Example 2:
+Input: nums = [2,5,6,0,0,1,2], target = 3
+Output: false
+
+Would this affect the run-time complexity? How and why?
+Yes! When there would be tons of duplicates then the run time is O(n)
+But generally this is still binary search and takes O(log(n))
+*/
+class Solution {
+    public boolean search(int[] nums, int target) {
+        if (nums.length == 0) return false;
+        int lo = 0, hi = nums.length - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) return true;
+            if (nums[mid] > nums[lo]) { // left portion is ordered
+                if (target >= nums[lo] && target < nums[mid]) {
+                    hi = mid - 1;
+                } else {
+                    lo = mid + 1;
+                }
+            } else if (nums[mid] < nums[lo]) { // right portion is ordered
+                if (target > nums[mid] && target <= nums[hi]) {
+                    lo = mid + 1;
+                } else {
+                    hi = mid - 1;
+                }
+            } else { // not sure, can only exclude the first element
+                lo += 1;
+            }
+        }
+        return false;
+    }
+}
