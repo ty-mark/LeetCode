@@ -66,3 +66,36 @@ class Solution {
         return res;
     }
 }
+
+// return the number of dinstinct solution given n
+class Solution {
+    public int totalNQueens(int n) {
+        int[][] board = new int[n][n];
+        return backtrack(board, 0, 0, n);
+    }
+    private int backtrack(int[][] board, int res, int curRow, int n) {
+        if (curRow == n) {
+            res += 1;
+        }
+        for (int col = 0; col < n; col++) {
+            if (isValid(board, curRow, col, n)) {
+                board[curRow][col] = 1;
+                res = backtrack(board, res, curRow + 1, n);
+                board[curRow][col] = 0;
+            }
+        }
+        return res;
+    }
+    private boolean isValid(int[][] board, int curRow, int curCol, int n) {
+        for (int row = curRow - 1; row >= 0; row--) {
+            if (board[row][curCol] == 1) return false;
+        }
+        for (int col = curCol - 1, row = curRow - 1; col >= 0 && row >= 0; col--, row--) {
+            if(board[row][col] == 1) return false;
+        }
+        for (int col = curCol + 1, row = curRow - 1; col < n && row >= 0; col++, row--) {
+            if(board[row][col] == 1) return false;
+        }
+        return true;
+    }
+}
