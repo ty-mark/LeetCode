@@ -71,3 +71,111 @@ class Solution {
         return 0;
     }
 }
+
+
+// follow up: return all shortest paths
+// A TLE solution
+class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> res = new ArrayList<>();
+        if (!wordList.contains(endWord)) return res;
+        Set<String> set = new HashSet<>();
+        List<String> list = new ArrayList<>();
+        set.add(beginWord);
+        list.add(beginWord);
+        backtrack(res, wordList, set, list, beginWord, endWord);
+        return res;
+    }
+    private void backtrack(List<List<String>> res, List<String> wordList, Set<String> set, List<String> currList, String begin, String end) {
+        if (begin.equals(end)) {
+            if (res.size() == 0) {
+                res.add(new ArrayList<>(currList));
+            } else {
+                int size = res.get(0).size();
+                if (size > currList.size()) {
+                    res.clear();
+                    res.add(new ArrayList<>(currList));
+                } else if (size == currList.size()) {
+                    res.add(new ArrayList<>(currList));
+                }
+            }
+            return;
+        }
+        for (int i = 0; i < begin.length(); i++) {
+            char[] currWord = begin.toCharArray();
+            for (char c = 'a'; c <= 'z'; c++) {
+                currWord[i] = c;
+                String temp = new String(currWord);
+                if (wordList.contains(temp) && !set.contains(temp)) {
+                    set.add(temp);
+                    currList.add(temp);
+                    backtrack(res, wordList, set, currList, temp, end);
+                    set.remove(temp);
+                    currList.remove(currList.size() - 1);
+                }
+            }
+        }
+    }
+}
+
+// Dijisktra algorithm
+class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> res = new ArrayList<>();
+        if (!wordList.contains(endWord)) return res;
+        Map<String, List<String>> adj = new HashMap<>();
+        Map<String, Integer> distance = new HashMap<>();
+        for (String str : wordList) {
+        	distance.put(str, Integer.MAX_VALUE);
+        }
+        distance.put(beginWord, 0);
+        Queue<String> fringe = new LinkedList<String>();
+        fringe.add(beginWord);
+        int minPath = Integer.MAX_VALUE;
+
+       	while (!fringe.isEmpty()) {
+       		String currWord = fringe.poll();
+       		int dist = distance.get(currWord) + 1;
+       		if (dist > minPath) break;
+       		for (int i = 0; i < currWord.length(); i++) {
+       			char[] word = currWord.toCharArray();
+	            for (char c = 'a'; c <= 'z'; c++) {
+	                word[i] = c;
+	                String nextWord = new String(word);
+	                if (distance.containsKey(nextWord)) {
+	                	if (dist > distance.get(nextWord)) continue;
+	                	else if (dist < distance.get(nextWord)) {
+	                		fringe.add(nextWord);
+	                		distance.put(nextWord, dist);
+	                	}
+	                	if (adj.containsKey(nextWord)) {
+	                		adj.get(nextWord).add(currWord);
+	                	} else {
+	                		List<String> temp = new ArrayList<>();
+	                		temp.add(currWord);
+	                		adj.put(nextWord, temp);
+	                	}
+	                	if (nextWord.equals(endWord)) minPath = dist;
+	                }
+	            }
+       		}
+       	}
+       	backtrack(res, adj, endWord, beginWord, new ArrayList<String>());
+       	return res;
+    }
+    private void backtrack(List<List<String>> res, Map<String, List<String>> adj, String word, String begin, List<String> list) {
+    	if (word.equals(begin)) {
+    		list.add(0, begin);
+    		res.add(new ArrayList<>(list));
+    		list.remove(0);
+    		return;
+    	}
+    	list.add(0, word);
+    	if (adj.get(word) != null) {
+    		for (String str : adj.get(word)) {
+	    		backtrack(res, adj, str, begin, list);
+	    	}
+    	}
+    	list.remove(0);
+    }
+}
