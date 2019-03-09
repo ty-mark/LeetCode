@@ -47,17 +47,16 @@ class Solution {
     
 }
 
-// Better approach with a little math
-// also need to note the use of Wrapper class "Integer"
+// recursive left/right bound solution
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        if (root == null) return true;
-        return isChildBST(root, null, null);
+        return dfs(null, root, null);
     }
-    private boolean isChildBST(TreeNode root, Integer low, Integer high) {
+    private boolean dfs(TreeNode left, TreeNode root, TreeNode right) {
         if (root == null) return true;
-        if ((low != null && root.val <= low) || (high != null && root.val >= high)) return false;
-        return isChildBST(root.left, low, root.val) && isChildBST(root.right, root.val, high);
+        if (left != null && left.val >= root.val) return false;
+        if (right != null && right.val <= root.val) return false;
+        return dfs(left, root.left, root) && dfs(root, root.right, right);
     }
 }
 
@@ -79,5 +78,20 @@ class Solution {
             root = root.right;
         }
         return true;
+    }
+}
+
+// recursive inorder traversal solution
+class Solution {
+    TreeNode prev = null;
+    public boolean isValidBST(TreeNode root) {
+        return inorder(root);
+    }
+    private boolean inorder(TreeNode curr) {
+        if (curr == null) return true;
+        if (!inorder(curr.left)) return false;
+        if (prev != null && prev.val >= curr.val) return false;
+        prev = curr;
+        return inorder(curr.right);
     }
 }
