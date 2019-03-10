@@ -30,3 +30,26 @@ class Solution {
         secondNode.val = temp;
     }
 }
+
+// recursive inorder traversal
+class Solution {
+    TreeNode first = null, second = null, prev = null;
+    public void recoverTree(TreeNode root) {
+        inorder(root);
+        if (second == null) second = prev;
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
+    }
+    private void inorder(TreeNode root) {
+        if (root == null) return;
+        inorder(root.left);
+        if (first == null && prev != null && prev.val > root.val) first = prev;
+        if (first != null && second == null && first.val < root.val) {
+            second = prev;
+            return;
+        }
+        prev = root;
+        inorder(root.right);
+    }
+}
