@@ -28,6 +28,7 @@ class Solution {
         q.add(root);
         while(q.peek() != null) {
             int len = q.size();
+            // the for loop is to retrieve all nodes in the same level
             for (int i = 0; i < len; i++) {
                 root = q.poll();
                 if (root.left == null && root.right == null) {
@@ -43,5 +44,15 @@ class Solution {
             depth += 1;
         }
         return depth;
+    }
+}
+
+// recursive dfs solution
+class Solution {
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
+        return (left == 0 || right == 0) ? left + right + 1 : Math.min(left, right) + 1;
     }
 }
