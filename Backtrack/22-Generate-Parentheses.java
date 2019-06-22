@@ -10,26 +10,33 @@ For example, given n = 3, a solution set is:
   "()()()"
 ]*/
 
-// backtracking
 class Solution {
     public List<String> generateParenthesis(int n) {
-        List<String> list = new ArrayList<>();
-        backtrack(list, "", 0, 0, n);
-        return list;
+        List<String> res = new ArrayList<>();
+        if (n == 0) return res;
+        backtrack(res, n, 0, 0, new StringBuilder());
+        return res;
     }
-    private void backtrack(List<String> list, String str, int left, int right, int n) {
-        // 满足n对括号
-        if (str.length() == n * 2) {
-            list.add(str);
-            // 返回，终止当前函数调用
+    private void backtrack(List<String> res, int n, int left, int right, StringBuilder sb) {
+        int size = sb.length();
+        if (size == 2 * n) { // terminate condition
+            res.add(sb.toString());
             return;
         }
-        // 左括号数量小于n，该条件在前保证"("一定在")"右侧
-        if (left < n) backtrack(list, str + "(", left + 1, right, n);
-        // 右括号数量少于左括号，才会调用该函数
-        if (right < left) backtrack(list, str + ")", left, right + 1, n);
+        if (left < n) { // when we can put a '('
+            sb.append('(');
+            backtrack(res, n, left + 1, right, sb);
+            sb.setLength(size); // recover the temp var
+        }
+            
+        if (right < left) { // when we can put a ')'
+            sb.append(')');
+            backtrack(res, n, left, right + 1, sb);
+            sb.setLength(size); // recover the temp var
+        }
     }
 }
+
 
 // dp solution
 // consider adding a pair of "()" to the original string as a mapping function:
