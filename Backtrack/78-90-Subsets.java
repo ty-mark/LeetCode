@@ -52,7 +52,7 @@ class Solution {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         res.add(new ArrayList<>());
-        Arrays.sort(nums);
+        Arrays.sort(nums); // sort only takes O(NlogN) while the algo takes O(2^N)
         backtrack(res, new ArrayList<>(), nums, 0);
         return res;
     }

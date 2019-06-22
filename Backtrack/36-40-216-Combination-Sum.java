@@ -1,4 +1,5 @@
-/*Given a set of candidate numbers (candidates) (without duplicates) 
+/*
+Given a set of candidate numbers (candidates) (without duplicates) 
 and a target number (target), find all unique combinations in candidates 
 where the candidate numbers sums to target.
 The same repeated number may be chosen from candidates unlimited number of times.
@@ -72,12 +73,50 @@ class Solution {
             list.add(new ArrayList<>(subList));
         } else {
             for (int i = start; i < nums.length; i++) {
-                // skip the duplicate entries
+                // skip the duplicate if its prev dup is not used
+                // "i > start" means the nums between start (inclusive) and i are not used
                 if(i > start && nums[i] == nums[i-1]) continue;
                 subList.add(nums[i]);
                 backtrack(list, subList, nums, target - nums[i], i + 1);
                 subList.remove(subList.size() - 1);
             }
+        }
+    }
+}
+
+/**
+Find all possible combinations of k numbers that add up to a number n, 
+given that only numbers from 1 to 9 can be used and each combination should be a unique set of numbers.
+
+Note:
+
+All numbers will be positive integers.
+The solution set must not contain duplicate combinations.
+Example 1:
+
+Input: k = 3, n = 7
+Output: [[1,2,4]]
+Example 2:
+
+Input: k = 3, n = 9
+Output: [[1,2,6], [1,3,5], [2,3,4]]
+*/
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> res = new ArrayList();
+        combine(res, new ArrayList<Integer>(), 0, 1, k, n);
+        return res;
+    }
+    private void combine(List<List<Integer>> res, List<Integer> list, 
+                         int currSum, int start, int k, int n) {
+        if (list.size() == k) {
+            if (currSum == n) res.add(new ArrayList<>(list));
+            return;
+        }
+        for (int i = start; i < 10; i++) {
+            list.add(i);
+            combine(res, list, currSum + i, i + 1, k, n);
+            list.remove(list.size() - 1);
         }
     }
 }
