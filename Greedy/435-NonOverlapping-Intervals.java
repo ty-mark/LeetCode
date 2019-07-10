@@ -26,7 +26,10 @@ Example 2:
 	Explanation: You need to remove two [1,2] to make the rest of intervals non-overlapping.
 */
 
-/* Interval Scheduling: earliest-finish-time-first algo */
+/* Interval Scheduling (maximization): earliest-finish-time-first algo 
+    
+    minimum interval removed => maximum compatible intervals
+*/
 class Solution {
     public int eraseOverlapIntervals(int[][] intervals) {
         int size = intervals.length;
