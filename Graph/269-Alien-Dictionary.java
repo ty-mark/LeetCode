@@ -61,8 +61,9 @@ class Solution {
 			for (int j = 0; j < from.length() && j < to.length(); j++) {
 				char f = from.charAt(j), t = to.charAt(j);
 				if (f != t) {
-					indegree[t - 'a'] += 1;
-					graph.get(f).add(t);
+					if (graph.get(f).add(t)) { // add the pair (f -> t) only if it not exist
+						indegree[t - 'a'] += 1;
+					}
 					break;
 				}
 			}
